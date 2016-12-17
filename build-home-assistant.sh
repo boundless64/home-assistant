@@ -4,7 +4,7 @@ HA_LATEST=false
 
 log() {
    now=$(date +"%Y%m%d-%H%M%S")
-   echo "$now - $*" >> /Users/ferdl/Development/docker/home-assistant/docker-build.log
+   echo "$now - $*" >> docker-build.log
 }
 
 log ">>--------------------->>"
@@ -17,7 +17,7 @@ if [ "$1" != "" ]; then
    HA_VERSION=$1
    log "Docker image with Home Assistant $HA_VERSION"
 else
-   _HA_VERSION="$(cat /Users/ferdl/Development/docker/home-assistant/docker-build.version)"
+   _HA_VERSION="$(cat docker-build.version)"
    HA_VERSION="$(curl 'https://pypi.python.org/pypi/homeassistant/json' | jq '.info.version' | tr -d '"')"
    HA_LATEST=true
    log "Docker image with Home Assistant 'latest' (version $HA_VERSION)"
@@ -120,7 +120,7 @@ if [ "$HA_LATEST" = true ]; then
    docker tag fgabriel/rpi-home-assistant:$HA_VERSION fgabriel/rpi-home-assistant:latest
    log "Pushing fgabriel/rpi-home-assistant:latest"
    docker push fgabriel/rpi-home-assistant:latest
-   echo $HA_VERSION > /Users/ferdl/Development/docker/home-assistant/docker-build.version
+   echo $HA_VERSION > docker-build.version
 fi
 
 log ">>--------------------->>"
